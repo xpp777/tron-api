@@ -23,7 +23,7 @@ func main() {
 	// 	fmt.Printf("err :%s", err.Error())
 	// 	return
 	// }
-	// resp,err := c.GetBlockById("da97145162439ca35bb5c1a12e2e42bb5854dd35e6e6f907ffa671d5dd83be50")
+	// resp,err := c.GetBlockById("")
 	// if err != nil {
 	// 	fmt.Printf("err :%s", err.Error())
 	// 	return
@@ -33,7 +33,7 @@ func main() {
 	// 	fmt.Println(v.TransactionID)
 	// 	fmt.Println(client.BalanceAccuracy(v.Value, -v.TokenInfo.Decimals))
 	// }
-	// PrivateKey,err := crypto.HexToECDSA("4f6495a19fdeb8575bd22c9d99cdf82cf2d2fca82fe8965d622ad26e7408f87a")
+	// PrivateKey,err := crypto.HexToECDSA("")
 	// if err != nil {
 	// 	fmt.Errorf("err:%v", err)
 	// 	return
@@ -54,7 +54,7 @@ func main() {
 	// // fmt.Println(resp.OwnerPermission)
 	// // fmt.Println(resp.WitnessPermission)
 	// // fmt.Println(resp.ActivePermission)
-	// resp,err := ci.GetBlockById("da97145162439ca35bb5c1a12e2e42bb5854dd35e6e6f907ffa671d5dd83be50")
+	// resp,err := ci.GetBlockById("")
 	// if err != nil {
 	// 	fmt.Printf("err :%s", err.Error())
 	// }

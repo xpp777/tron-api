@@ -1,9 +1,9 @@
 package base58
 
 import (
+	"github.com/xiaomingping/tron-api/pkg/hexutil"
 	"strings"
 	"testing"
-	"tron-api/pkg/hexutil"
 )
 
 func TestEncode(t *testing.T) {

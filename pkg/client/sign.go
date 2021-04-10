@@ -5,8 +5,8 @@ import (
 	"crypto/sha256"
 	"github.com/fbsobreira/gotron-sdk/pkg/proto/core"
 	"github.com/golang/protobuf/proto"
+	"github.com/xiaomingping/tron-api/pkg/crypto"
 	"time"
-	"tron-api/pkg/crypto"
 )
 
 // SignTransaction 签名交易

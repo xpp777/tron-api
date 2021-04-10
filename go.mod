@@ -1,4 +1,4 @@
-module tron-api
+module github.com/xiaomingping/tron-api
 
 go 1.14
 

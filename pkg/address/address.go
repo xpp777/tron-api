@@ -1,9 +1,9 @@
 package address
 
 import (
-	"tron-api/pkg/base58"
-	"tron-api/pkg/crypto"
-	"tron-api/pkg/keystore"
+	"github.com/xiaomingping/tron-api/pkg/base58"
+	"github.com/xiaomingping/tron-api/pkg/crypto"
+	"github.com/xiaomingping/tron-api/pkg/keystore"
 )
 
 // 生成地址 私钥
