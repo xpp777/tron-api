@@ -9,9 +9,21 @@ func main() {
 	// 	return
 	// }
 	// fmt.Printf("addr:%s,path:%s", addr, path)
+	// client.ApiKeys = []string{
+	// 	"5527c743-dc35-4a00-8b97-7e75ac9c164b",
+	// 	"4c492539-5e03-452b-9633-6e5b8998cc36",
+	// }
+	// var Contract []client.ContractModel
+	// Contract = append(Contract, client.ContractModel{
+	// 	Name:               "glv",
+	// 	Type:                "trc20",
+	// 	Contract:            "TLYUprahhotHaKQ9U4s3AiXh7S5vuiMtBi",
+	// 	Decimal:             6,
+	// })
+	// client.InitContract(Contract)
 	// c := client.Client{Url: client.ApiUrlShasta}
 	// c := client.NewClient()
-	//  resp,err := c.GetAccount("TQtPu7dWDgD5HSwVFD3c72sUDbm1pe9kaW")
+	//  resp,err := c.GetAccount("TJgMDURAhPEcDw8JXpJKttSSK6f3zrYgED")
 	// if err != nil {
 	// 	fmt.Printf("err :%s", err.Error())
 	// 	return

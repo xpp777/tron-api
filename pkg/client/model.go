@@ -112,3 +112,12 @@ type GettransactioninfobyidModel struct {
 		Data    string   `json:"data"`
 	} `json:"log"`
 }
+
+
+// Contract 合约 TRC20 和 TRC10
+type ContractModel struct {
+	Name                string          `toml:"name"`       // USDT BTT
+	Type                string          `toml:"type"`       // TRC20 和 TRC10
+	Contract            string          `toml:"contract"`   // 合约地址或者合约ID
+	Decimal             int32           `toml:"decimal"`    // 合约小数位
+}

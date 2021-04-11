@@ -22,8 +22,6 @@ import (
 var (
 	feelimit int64 = 5000000 // 转账合约燃烧 trx数量 单位 sun 默认0.5trx 转账一笔大概消耗能量 0.26trx
 	Trx            = "trx"
-	GLV            = "TGx6pZ7j7NgXCtifWHeBSRTUrmtMCyo6Qs"
-	USDT           = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"
 	Urls           = []string{
 		"3.225.171.164",
 		"52.53.189.99",
@@ -43,10 +41,11 @@ var (
 		"3.218.137.187",
 		"34.237.210.82",
 	}
-	connIndex    int
-	connMutex    sync.Mutex
-	PoolGrpcConn *gpool.Pool
+	connIndex       int
+	connMutex       sync.Mutex
+	PoolGrpcConn    *gpool.Pool
 )
+
 
 type Rpc struct {
 	Client api.WalletClient
@@ -248,21 +247,19 @@ func (r *Rpc) TransferContract(ownerKey *ecdsa.PrivateKey, Contract string, data
 
 // 转账
 func (r *Rpc) Sen(key *ecdsa.PrivateKey, contract, to string, amount decimal.Decimal) (string, error) {
-	switch contract {
+	Type,Decimal := chargeContract(contract)
+	switch Type {
 	case Trx:
-		var amountdecimal = decimal.New(1, 6)
+		var amountdecimal = decimal.New(1, Decimal)
 		amountac, _ := amount.Mul(amountdecimal).Float64()
 		return r.Transfer(key, to, int64(amountac))
-	case GLV:
-		var amountdecimal = decimal.New(1, 6)
+	case "trc20":
+		var amountdecimal = decimal.New(1, Decimal)
 		amountac, _ := amount.Mul(amountdecimal).Float64()
 		data := r.processTransferParameter(to, int64(amountac))
 		return r.TransferContract(key, contract, data, feelimit)
-	case USDT:
-		var amountdecimal = decimal.New(1, 6)
-		amountac, _ := amount.Mul(amountdecimal).Float64()
-		data := r.processTransferParameter(to, int64(amountac))
-		return r.TransferContract(key, contract, data, feelimit)
+	case "trc10":
+		return "", nil
 	default:
 		return "", nil
 	}

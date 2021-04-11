@@ -16,11 +16,49 @@ const (
 )
 
 var (
-	curIndex    = 0
-	mutex       sync.Mutex
-	mapContract = make(map[string]*Contract)
-	ApiKeys  []string
+	curIndex        = 0
+	mutex           sync.Mutex
+	ApiKeys         []string
+	trxdecimal      int32 = 6 // trx 单位
+	mapContract           = make(map[string]*ContractModel)
+	mapContractType       = map[string]bool{
+		"trx":   true,
+		"trc10": true,
+		"trc20": true,
+	}
 )
+
+// 初始化合约
+func InitContract(contracts []ContractModel) error {
+	for i, v := range contracts {
+		if ok, _ := mapContractType[v.Type]; ok {
+			mapContract[v.Contract] = &contracts[i]
+		} else {
+			return fmt.Errorf("the contract type %s is not exist pleasecheck", v.Type)
+		}
+	}
+	return nil
+}
+
+// 判断当前属于什么合约
+func chargeContract(contract string) (string, int32) {
+	if contract == "trx" || contract == "" {
+		return Trx, trxdecimal
+	}
+	if v := mapContract[contract]; v != nil {
+		if ok, _ := mapContractType[v.Type]; ok {
+			return v.Type, v.Decimal
+		}
+	}
+	return "NONE", 18
+}
+
+func chargeContractObj(contract string) *ContractModel {
+	if v := mapContract[contract]; v != nil {
+		return v
+	}
+	return nil
+}
 
 // 5527c743-dc35-4a00-8b97-7e75ac9c164b
 // 4c492539-5e03-452b-9633-6e5b8998cc36
@@ -69,6 +107,9 @@ func (c *Client) GetAccount(address string) (*GetAccountModel, error) {
 	if Account.Success != true {
 		return nil, errors.New("连接失败")
 	}
+	if Account.Data == nil {
+		return nil, errors.New("账号未激活")
+	}
 	return &Account.Data[0], nil
 }
 
@@ -79,20 +120,16 @@ func BalanceAccuracy(Balance string, exp int32) string {
 }
 
 // 获取余额
-func GetTRXBalance(req *GetAccountModel) BalanceModel {
-	BalanceModel := BalanceModel{}
+func GetTRXBalance(req *GetAccountModel) map[string]string {
+	BalanceModel := make(map[string]string)
 	Balance := gconv.Int64(req.Balance)
-	BalanceModel.Trx = BalanceAccuracy(gconv.String(Balance), -6)
+	BalanceModel[Trx] = BalanceAccuracy(gconv.String(Balance), -trxdecimal)
 	for _, v := range req.Trc20 {
 		for key, val := range v {
-			switch key {
-			case GLV:
-				BalanceModel.GLV = BalanceAccuracy(val, -6)
-			case USDT:
-				BalanceModel.Usdt = BalanceAccuracy(val, -6)
+			if v :=chargeContractObj(key);v != nil {
+				BalanceModel[v.Name] = BalanceAccuracy(gconv.String(val), -v.Decimal)
 			}
 		}
-
 	}
 	return BalanceModel
 }
