@@ -87,7 +87,7 @@ func GetTRXBalance(req *GetAccountModel) BalanceModel {
 		for key, val := range v {
 			switch key {
 			case GLV:
-				BalanceModel.GLV = BalanceAccuracy(val, -18)
+				BalanceModel.GLV = BalanceAccuracy(val, -6)
 			case USDT:
 				BalanceModel.Usdt = BalanceAccuracy(val, -6)
 			}

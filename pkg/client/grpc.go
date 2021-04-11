@@ -22,7 +22,7 @@ import (
 var (
 	feelimit int64 = 5000000 // 转账合约燃烧 trx数量 单位 sun 默认0.5trx 转账一笔大概消耗能量 0.26trx
 	Trx            = "trx"
-	GLV            = "TKD4dFTTTSt1G6WLukqGBkFthDJbXFNXnC"
+	GLV            = "TGx6pZ7j7NgXCtifWHeBSRTUrmtMCyo6Qs"
 	USDT           = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"
 	Urls           = []string{
 		"3.225.171.164",

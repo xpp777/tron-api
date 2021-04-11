@@ -18,7 +18,11 @@ func main() {
 	// }
 	// fmt.Println(resp.Balance)
 	// fmt.Println(client.GetTRXBalance(resp))
-	// Resp,err :=  c.GetTransactionsTrc20("TQtPu7dWDgD5HSwVFD3c72sUDbm1pe9kaW","TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t")
+	// client.ApiKeys = []string{
+	// 	"5527c743-dc35-4a00-8b97-7e75ac9c164b",
+	// 	"4c492539-5e03-452b-9633-6e5b8998cc36",
+	// }
+	// Resp, err := c.GetTransactionsTrc20("TD3y5r2AxHfdjBXA336GVVqxYrjNMKgZrn", "TLYUprahhotHaKQ9U4s3AiXh7S5vuiMtBi")
 	// if err != nil {
 	// 	fmt.Printf("err :%s", err.Error())
 	// 	return
@@ -28,11 +32,18 @@ func main() {
 	// 	fmt.Printf("err :%s", err.Error())
 	// 	return
 	// }
-	// fmt.Println(resp)
-	// for _,v := range Resp{
+	// fmt.Println(Resp)
+	// for _, v := range Resp {
 	// 	fmt.Println(v.TransactionID)
 	// 	fmt.Println(client.BalanceAccuracy(v.Value, -v.TokenInfo.Decimals))
 	// }
+	// resp, err := c.GetAccount("TD3y5r2AxHfdjBXA336GVVqxYrjNMKgZrn")
+	// if err != nil {
+	// 	fmt.Printf("err :%s", err.Error())
+	// 	return
+	// }
+	// fmt.Println(resp.Balance)
+	// fmt.Println(client.GetTRXBalance(resp))
 	// PrivateKey,err := crypto.HexToECDSA("")
 	// if err != nil {
 	// 	fmt.Errorf("err:%v", err)
