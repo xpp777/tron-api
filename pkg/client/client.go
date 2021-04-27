@@ -41,7 +41,7 @@ func InitContract(contracts []ContractModel) error {
 }
 
 // 判断当前属于什么合约
-func chargeContract(contract string) (string, int32) {
+func ChargeContract(contract string) (string, int32) {
 	if contract == "trx" || contract == "" {
 		return Trx, trxdecimal
 	}
@@ -53,8 +53,8 @@ func chargeContract(contract string) (string, int32) {
 	return "NONE", 18
 }
 
-func chargeContractObj(contract string) *ContractModel {
-	if v := mapContract[contract]; v != nil {
+func ChargeContractObj(contract string) *ContractModel {
+	if v, ok := mapContract[contract]; ok {
 		return v
 	}
 	return nil
@@ -126,7 +126,7 @@ func GetTRXBalance(req *GetAccountModel) map[string]string {
 	BalanceModel[Trx] = BalanceAccuracy(gconv.String(Balance), -trxdecimal)
 	for _, v := range req.Trc20 {
 		for key, val := range v {
-			if v :=chargeContractObj(key);v != nil {
+			if v := ChargeContractObj(key); v != nil {
 				BalanceModel[v.Name] = BalanceAccuracy(gconv.String(val), -v.Decimal)
 			}
 		}

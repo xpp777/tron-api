@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="66812c47-cd1b-4de2-a2b2-037329506212" name="默认的" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/demo.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/demo.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/client/grpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/client/grpc.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/client/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/client/model.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/client/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/client/client.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +39,7 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../tron-rpc" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
