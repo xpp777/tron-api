@@ -263,7 +263,7 @@ func (r *Rpc) TransferContract(ownerKey *ecdsa.PrivateKey, Contract string, data
 
 // 转账
 func (r *Rpc) Sen(key *ecdsa.PrivateKey, contract, to string, amount decimal.Decimal) (string, error) {
-	Type, Decimal := chargeContract(contract)
+	Type, Decimal := ChargeContract(contract)
 	switch Type {
 	case Trx:
 		var amountdecimal = decimal.New(1, Decimal)
