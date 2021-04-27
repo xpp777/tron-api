@@ -8,6 +8,7 @@ import (
 	"github.com/fbsobreira/gotron-sdk/pkg/proto/api"
 	"github.com/fbsobreira/gotron-sdk/pkg/proto/core"
 	"github.com/gogf/gf/container/gpool"
+	"github.com/golang/protobuf/proto"
 	"github.com/shopspring/decimal"
 	"github.com/xiaomingping/tron-api/pkg/base58"
 	"github.com/xiaomingping/tron-api/pkg/crypto"
@@ -20,13 +21,14 @@ import (
 )
 
 var (
-	feelimit int64 = 5000000 // 转账合约燃烧 trx数量 单位 sun 默认0.5trx 转账一笔大概消耗能量 0.26trx
+	feelimit int64 = 40000000  // 转账合约燃烧 trx数量 单位 sun 默认0.5trx 转账一笔大概消耗能量 0.26trx
+	StartNum int64 = 14397932 // 最后校验块
+	count    int64 = 20       // 每次获取块数量
 	Trx            = "trx"
 	Urls           = []string{
 		"3.225.171.164",
 		"52.53.189.99",
 		"18.196.99.16",
-		"34.253.187.192",
 		"34.253.187.192",
 		"18.133.82.227",
 		"35.180.51.163",
@@ -41,11 +43,10 @@ var (
 		"3.218.137.187",
 		"34.237.210.82",
 	}
-	connIndex       int
-	connMutex       sync.Mutex
-	PoolGrpcConn    *gpool.Pool
+	connIndex    int
+	connMutex    sync.Mutex
+	PoolGrpcConn *gpool.Pool
 )
-
 
 type Rpc struct {
 	Client api.WalletClient
@@ -139,8 +140,36 @@ func (r *Rpc) processBalanceOfData(trc20 []byte) (amount int64) {
 	return
 }
 
+// 处理合约参数
+func (r *Rpc) processTransferData(trc20 []byte) (to string, amount int64, flag bool) {
+	if len(trc20) >= 68 {
+		if hexutil.Encode(trc20[:4]) != "a9059cbb" {
+			return
+		}
+		// 多1位41
+		trc20[15] = 65
+		to = base58.EncodeCheck(trc20[15:36])
+		amount = new(big.Int).SetBytes(common.TrimLeftZeroes(trc20[36:68])).Int64()
+		flag = true
+	}
+	return
+}
+
+// 处理合约转账参数
+func (r *Rpc) processTransferParameter(to string, amount int64) (data []byte) {
+	methodID, _ := hexutil.Decode("a9059cbb")
+	addr, _ := base58.DecodeCheck(to)
+	paddedAddress := common.LeftPadBytes(addr[1:], 32)
+	amountBig := new(big.Int).SetInt64(amount)
+	paddedAmount := common.LeftPadBytes(amountBig.Bytes(), 32)
+	data = append(data, methodID...)
+	data = append(data, paddedAddress...)
+	data = append(data, paddedAmount...)
+	return
+}
+
 // 获取合约余额
-func (r *Rpc) GetTrc20Balance(contract, addr string, ac *ecdsa.PrivateKey) (float64, error) {
+func (r *Rpc) GetTrc20Balance(contract, addr string,rxp int32, ac *ecdsa.PrivateKey) (float64, error) {
 	transferContract := new(core.TriggerSmartContract)
 	transferContract.OwnerAddress = crypto.PubkeyToAddress(ac.PublicKey).Bytes()
 	transferContract.ContractAddress, _ = base58.DecodeCheck(contract)
@@ -152,7 +181,7 @@ func (r *Rpc) GetTrc20Balance(contract, addr string, ac *ecdsa.PrivateKey) (floa
 	if transferTransactionEx == nil || len(transferTransactionEx.GetConstantResult()) == 0 {
 		return 0, fmt.Errorf("GetConstantResult error: invalid TriggerConstantContract")
 	}
-	Balance := decimal.New(r.processBalanceOfData(transferTransactionEx.GetConstantResult()[0]), 6)
+	Balance := decimal.New(r.processBalanceOfData(transferTransactionEx.GetConstantResult()[0]), rxp)
 	res, _ := Balance.Float64()
 	return res, err
 }
@@ -192,19 +221,6 @@ func (r *Rpc) Transfer(ownerKey *ecdsa.PrivateKey, toAddress string, amount int6
 		return "", fmt.Errorf("api get false the msg: %v", result.String())
 	}
 	return txid, err
-}
-
-// 处理合约转账参数
-func (r *Rpc) processTransferParameter(to string, amount int64) (data []byte) {
-	methodID, _ := hexutil.Decode("a9059cbb")
-	addr, _ := base58.DecodeCheck(to)
-	paddedAddress := common.LeftPadBytes(addr[1:], 32)
-	amountBig := new(big.Int).SetInt64(amount)
-	paddedAmount := common.LeftPadBytes(amountBig.Bytes(), 32)
-	data = append(data, methodID...)
-	data = append(data, paddedAddress...)
-	data = append(data, paddedAmount...)
-	return
 }
 
 // 合约转账 TRC20
@@ -247,7 +263,7 @@ func (r *Rpc) TransferContract(ownerKey *ecdsa.PrivateKey, Contract string, data
 
 // 转账
 func (r *Rpc) Sen(key *ecdsa.PrivateKey, contract, to string, amount decimal.Decimal) (string, error) {
-	Type,Decimal := chargeContract(contract)
+	Type, Decimal := chargeContract(contract)
 	switch Type {
 	case Trx:
 		var amountdecimal = decimal.New(1, Decimal)
@@ -265,18 +281,71 @@ func (r *Rpc) Sen(key *ecdsa.PrivateKey, contract, to string, amount decimal.Dec
 	}
 }
 
-// 获取交易详情 todo 待更新
-func (r *Rpc) GetBlockById(exchangeId string) (*core.Transaction, error) {
+// 根据交易查询明细
+func (r *Rpc) GetBlockById(exchangeId string) (*core.TransactionInfo, error) {
 	blockId := new(api.BytesMessage)
 	var err error
 	blockId.Value, err = hexutil.Decode(exchangeId)
 	if err != nil {
 		return nil, err
 	}
-	result, err := r.Client.GetTransactionById(r.timeoutContext(), blockId)
+	result, err := r.Client.GetTransactionInfoById(r.timeoutContext(), blockId)
 	if err != nil {
 		return nil, err
 	}
-
 	return result, nil
+}
+
+// 获取最新块数据
+func (r *Rpc) GetNowBlock2(Transfer func(*TransferData)) {
+	BlockExTention, err := r.Client.GetBlockByLimitNext2(r.timeoutContext(), &api.BlockLimit{StartNum: StartNum, EndNum: StartNum + count})
+	if err != nil {
+		return
+	}
+	connMutex.Lock()
+	StartNum = StartNum + int64(len(BlockExTention.Block))
+	defer connMutex.Unlock()
+	for _, v := range BlockExTention.Block {
+		fmt.Println("new BackNumber:", v.BlockHeader.RawData.GetNumber())
+		r.ProcessBlock(v, Transfer)
+	}
+
+}
+
+// 处理最新块数据
+func (r *Rpc) ProcessBlock(block *api.BlockExtention, Transfer func(*TransferData)) {
+	for _, v := range block.Transactions {
+		txId := hexutil.Encode(v.Txid)
+		for _, val := range v.Transaction.RawData.Contract {
+			switch val.Type {
+			case core.Transaction_Contract_TransferContract:
+				// trx 转账
+				unObj := &core.TransferContract{}
+				err := proto.Unmarshal(val.Parameter.GetValue(), unObj)
+				if err != nil {
+					fmt.Printf("parse Contract %v err: %v\n", val, err)
+					continue
+				}
+				form := base58.EncodeCheck(unObj.GetOwnerAddress())
+				to := base58.EncodeCheck(unObj.GetToAddress())
+				Transfer(&TransferData{FormAddress: form, ToAddress: to, Amount: unObj.GetAmount(), Contract: "trx", TxId: txId})
+			case core.Transaction_Contract_TriggerSmartContract:
+				// trc20 转账
+				unObj := &core.TriggerSmartContract{}
+				err := proto.Unmarshal(val.Parameter.GetValue(), unObj)
+				if err != nil {
+					fmt.Printf("parse Contract %v err: %v\n", val, err)
+					continue
+				}
+				contract := base58.EncodeCheck(unObj.GetContractAddress())
+				form := base58.EncodeCheck(unObj.GetOwnerAddress())
+				data := unObj.GetData()
+				// unObj.Data  https://goethereumbook.org/en/transfer-tokens/ 参考eth 操作
+				to, amount, flag := r.processTransferData(data)
+				if flag { // 只有调用了 transfer(address,uint256) 才是转账
+					Transfer(&TransferData{FormAddress: form, ToAddress: to, Amount: amount, Contract: contract, TxId: txId})
+				}
+			}
+		}
+	}
 }

@@ -113,11 +113,18 @@ type GettransactioninfobyidModel struct {
 	} `json:"log"`
 }
 
-
 // Contract 合约 TRC20 和 TRC10
 type ContractModel struct {
-	Name                string          `toml:"name"`       // USDT BTT
-	Type                string          `toml:"type"`       // TRC20 和 TRC10
-	Contract            string          `toml:"contract"`   // 合约地址或者合约ID
-	Decimal             int32           `toml:"decimal"`    // 合约小数位
+	Name     string `toml:"name"`     // USDT BTT
+	Type     string `toml:"type"`     // TRC20 和 TRC10
+	Contract string `toml:"contract"` // 合约地址或者合约ID
+	Decimal  int32  `toml:"decimal"`  // 合约小数位
+}
+
+type TransferData struct {
+	TxId        string `json:"tx_id"`        // 转账id
+	FormAddress string `json:"form_address"` // 转账地址
+	ToAddress   string `json:"to_address"`   // 收款地址
+	Contract    string `toml:"contract"`     // 合约地址或者合约ID
+	Amount      int64  `json:"amount"`       // 数量
 }

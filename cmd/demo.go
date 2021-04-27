@@ -83,4 +83,29 @@ func main() {
 	// }
 	// fmt.Println(resp.RawData.RefBlockNum)
 	// fmt.Println(resp.Ret[0])
+	// ci,err := client.GetNode()
+	// if err != nil {
+	// 		fmt.Printf("err :%s", err.Error())
+	// }
+	// client.StartNum = 14397932
+	// ci.GetNowBlock2(func(data *client.TransferData) {
+	// 	fmt.Println(data)
+	// })
+	// resp,err := ci.GetBlockById("4333d42a00ab2f5fdabfdef5b4d98df81dc256d44392735fc4e0f5a57677f663")
+	// if err != nil {
+	// 	fmt.Printf("err :%s", err.Error())
+	// 	return
+	// }
+	// fmt.Println(resp.GetExchangeId())
+	// fmt.Println(resp.GetBlockTimeStamp())
+	// fmt.Println(resp.GetContractAddress())
+	// fmt.Println(resp.GetExchangeReceivedAmount())
+	// resps, err := ci.GetAccount("TX17ncfbkyTMMxHWaiGBqDuGJP987WaEuE")
+	// if err != nil {
+	// 	fmt.Printf("err :%s", err.Error())
+	// 	return
+	// }
+	// fmt.Println(resps.Balance)
+	// fmt.Println(resps.GetAsset())
+
 }
