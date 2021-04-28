@@ -83,14 +83,26 @@ func main() {
 	// }
 	// fmt.Println(resp.RawData.RefBlockNum)
 	// fmt.Println(resp.Ret[0])
+	// client.Urls = []string{
+	// 	"grpc.shasta.trongrid.io",
+	// 	"grpc.shasta.trongrid.io",
+	// 	"grpc.shasta.trongrid.io",
+	// }
 	// ci,err := client.GetNode()
 	// if err != nil {
 	// 		fmt.Printf("err :%s", err.Error())
 	// }
-	// client.StartNum = 14397932
-	// ci.GetNowBlock2(func(data *client.TransferData) {
-	// 	fmt.Println(data)
-	// })
+	// client.SetStartNum(14428235)
+	// for  {
+	// 	fmt.Println(client.GetStartNum())
+	// 	ci.GetNowBlock2(func(data *client.TransferData) {
+	// 		if data.Contract == "trx" {
+	// 			return
+	// 		}
+	// 		fmt.Println(data)
+	// 	})
+	// 	time.Sleep(time.Second * 20)
+	// }
 	// resp,err := ci.GetBlockById("4333d42a00ab2f5fdabfdef5b4d98df81dc256d44392735fc4e0f5a57677f663")
 	// if err != nil {
 	// 	fmt.Printf("err :%s", err.Error())

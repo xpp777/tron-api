@@ -21,8 +21,8 @@ import (
 )
 
 var (
-	feelimit int64 = 40000000  // 转账合约燃烧 trx数量 单位 sun 默认0.5trx 转账一笔大概消耗能量 0.26trx
-	StartNum int64 = 14397932 // 最后校验块
+	feelimit int64 = 40000000 // 转账合约燃烧 trx数量 单位 sun 默认0.5trx 转账一笔大概消耗能量 0.26trx
+	startNum int64 = 14397932 // 最后校验块
 	count    int64 = 20       // 每次获取块数量
 	Trx            = "trx"
 	Urls           = []string{
@@ -51,6 +51,15 @@ var (
 type Rpc struct {
 	Client api.WalletClient
 	Conn   *grpc.ClientConn
+}
+
+func SetStartNum(StartNum int64) {
+	connMutex.Lock()
+	startNum = StartNum
+	defer connMutex.Unlock()
+}
+func GetStartNum() int64 {
+	return startNum
 }
 
 // 获取超时上下文
@@ -169,7 +178,7 @@ func (r *Rpc) processTransferParameter(to string, amount int64) (data []byte) {
 }
 
 // 获取合约余额
-func (r *Rpc) GetTrc20Balance(contract, addr string,rxp int32, ac *ecdsa.PrivateKey) (float64, error) {
+func (r *Rpc) GetTrc20Balance(contract, addr string, rxp int32, ac *ecdsa.PrivateKey) (float64, error) {
 	transferContract := new(core.TriggerSmartContract)
 	transferContract.OwnerAddress = crypto.PubkeyToAddress(ac.PublicKey).Bytes()
 	transferContract.ContractAddress, _ = base58.DecodeCheck(contract)
@@ -298,15 +307,13 @@ func (r *Rpc) GetBlockById(exchangeId string) (*core.TransactionInfo, error) {
 
 // 获取最新块数据
 func (r *Rpc) GetNowBlock2(Transfer func(*TransferData)) {
-	BlockExTention, err := r.Client.GetBlockByLimitNext2(r.timeoutContext(), &api.BlockLimit{StartNum: StartNum, EndNum: StartNum + count})
+	BlockExTention, err := r.Client.GetBlockByLimitNext2(r.timeoutContext(), &api.BlockLimit{StartNum: startNum, EndNum: startNum + count})
 	if err != nil {
 		return
 	}
-	connMutex.Lock()
-	StartNum = StartNum + int64(len(BlockExTention.Block))
-	defer connMutex.Unlock()
+	StartNum := startNum + int64(len(BlockExTention.Block)-1)
+	SetStartNum(StartNum)
 	for _, v := range BlockExTention.Block {
-		fmt.Println("new BackNumber:", v.BlockHeader.RawData.GetNumber())
 		r.ProcessBlock(v, Transfer)
 	}
 
