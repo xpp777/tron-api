@@ -12,7 +12,7 @@ import (
 
 // 创建地址
 func StoreAccountToKeyStoreFile(account *ecdsa.PrivateKey, password, walletName string) (filePath string, err error) {
-	password = hashAndSalt([]byte(password + "trx"))
+	password = HashAndSalt([]byte(password + "trx"))
 	filePath = walletName
 	f, err1 := os.Create(filePath) // 创建文件
 	if err1 != nil {
@@ -32,7 +32,7 @@ func StoreAccountToKeyStoreFile(account *ecdsa.PrivateKey, password, walletName 
 }
 
 func LoadAccountFile(filePath, pwd string) (account *ecdsa.PrivateKey, err error) {
-	password := hashAndSalt([]byte(pwd + "trx"))
+	password := HashAndSalt([]byte(pwd + "trx"))
 	b, err1 := ioutil.ReadFile(filePath)
 	if err1 != nil {
 		err = err1
@@ -53,7 +53,7 @@ func LoadAccountFile(filePath, pwd string) (account *ecdsa.PrivateKey, err error
 	return
 }
 
-func hashAndSalt(pwd []byte) string {
+func HashAndSalt(pwd []byte) string {
 	lens := len(pwd)
 	var num int
 	for i := 0; i < lens; i++ {

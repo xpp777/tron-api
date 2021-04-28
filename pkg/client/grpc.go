@@ -316,6 +316,7 @@ func (r *Rpc) GetNowBlock2(Transfer func(*TransferData)) {
 	for _, v := range BlockExTention.Block {
 		r.ProcessBlock(v, Transfer)
 	}
+	fmt.Println("block_num:",StartNum)
 
 }
 

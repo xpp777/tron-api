@@ -3,12 +3,19 @@ package main
 func main() {
 	// path := "./key"
 	// pwd := "1esdaxcsacsac"
-	// addr, path, err := address.CreatAddress(path, pwd)
+	// addr, PrivateKey, err := address.CreatAddress(pwd)
 	// if err != nil {
 	// 	fmt.Printf("err :%s", err.Error())
 	// 	return
 	// }
-	// fmt.Printf("addr:%s,path:%s", addr, path)
+	// fmt.Printf("addr:%s,PrivateKey:%s\n", addr, PrivateKey)
+	// res,err := address.GetPrivateKey(pwd,PrivateKey)
+	// if err != nil {
+	// 	fmt.Printf("err :%s", err.Error())
+	// 	return
+	// }
+	// addr = base58.EncodeCheck(crypto.PubkeyToAddress(res.PublicKey).Bytes())
+	// fmt.Println(addr)
 	// client.ApiKeys = []string{
 	// 	"5527c743-dc35-4a00-8b97-7e75ac9c164b",
 	// 	"4c492539-5e03-452b-9633-6e5b8998cc36",

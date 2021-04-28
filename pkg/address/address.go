@@ -1,23 +1,47 @@
 package address
 
 import (
+	"crypto/ecdsa"
+	"crypto/md5"
+	"encoding/base64"
 	"github.com/xiaomingping/tron-api/pkg/base58"
 	"github.com/xiaomingping/tron-api/pkg/crypto"
 	"github.com/xiaomingping/tron-api/pkg/keystore"
 )
 
 // 生成地址 私钥
-func CreatAddress(path, pwd string) (addr, filePath string, err error) {
+func CreatAddress(pwd string) (addr, PrivateKey string, err error) {
 	re, err := crypto.GenerateKey()
 	if err != nil {
 		return "", "", err
 	}
 	addr = base58.EncodeCheck(crypto.PubkeyToAddress(re.PublicKey).Bytes())
-	paths, err := keystore.StoreAccountToKeyStoreFile(re, pwd, path+"/"+addr)
-	if err != nil {
-		return "", "", err
+	password := keystore.HashAndSalt([]byte(pwd + "trx"))
+	prikey := crypto.PrikeyToHexString(re)
+	md5sum := md5.Sum([]byte(password))
+	result, err1 := crypto.AesEncrypt([]byte(prikey), md5sum[:])
+	if err1 != nil {
+		err = err1
+		return
 	}
-	return addr, paths, err
+	return addr, base64.StdEncoding.EncodeToString(result), err
+}
+
+func GetPrivateKey(pwd,PrivateKey string) (account *ecdsa.PrivateKey, err error) {
+	password := keystore.HashAndSalt([]byte(pwd + "trx"))
+	re, err1 := base64.StdEncoding.DecodeString(PrivateKey)
+	if err != nil {
+		err = err1
+		return
+	}
+	md5sum := md5.Sum([]byte(password))
+	result, err1 := crypto.AesDecrypt(re, md5sum[:])
+	if err != nil {
+		err = err1
+		return
+	}
+	account, err = crypto.GetPrivateKeyByHexString(string(result))
+	return
 }
 
 // 验证地址
