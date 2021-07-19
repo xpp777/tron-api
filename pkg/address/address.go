@@ -41,13 +41,13 @@ func Encrypt(pwd, PrivateKey string) (string, error) {
 func GetPrivateKey(pwd, PrivateKey string) (account *ecdsa.PrivateKey, err error) {
 	password := keystore.HashAndSalt([]byte(pwd + "trx"))
 	re, err1 := base64.StdEncoding.DecodeString(PrivateKey)
-	if err != nil {
+	if err1 != nil {
 		err = err1
 		return
 	}
 	md5sum := md5.Sum([]byte(password))
 	result, err1 := crypto.AesDecrypt(re, md5sum[:])
-	if err != nil {
+	if err1 != nil {
 		err = err1
 		return
 	}

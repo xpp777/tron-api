@@ -1,15 +1,17 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/xiaomingping/tron-api/pkg/client"
 )
 
 func main() {
-	client.Urls = []string{
-		"grpc.shasta.trongrid.io",
-		"grpc.shasta.trongrid.io",
-		"grpc.shasta.trongrid.io",
-	}
+	// client.Urls = []string{
+	// 	"grpc.shasta.trongrid.io",
+	// 	"grpc.shasta.trongrid.io",
+	// 	"grpc.shasta.trongrid.io",
+	// }
 	// path := "./key"
 	// pwd := "a"
 	// addr, PrivateKey, err := address.CreatAddress(pwd)
@@ -147,5 +149,43 @@ func main() {
 	// }
 	// fmt.Println(resps.Balance)
 	// fmt.Println(resps.GetAsset())
+	var Contract []client.ContractModel
+	Contract = append(Contract, client.ContractModel{
+		Name:               "glv",
+		Type:                "trc20",
+		Contract:            "TGx6pZ7j7NgXCtifWHeBSRTUrmtMCyo6Qs",
+		Decimal:             6,
+	})
+	Contract = append(Contract, client.ContractModel{
+		Name:               "USDT",
+		Type:                "trc20",
+		Contract:            "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
+		Decimal:             6,
+	})
+	err := client.InitContract(Contract)
+	if err != nil {
+		fmt.Printf("err :%s", err.Error())
+		return
+	}
+	client.ApiKeys = []string{
+		"9e3b28c4-3fd3-48c9-97af-ce4af055bcbb",
+		"e29b2bc3-acba-4fe1-b784-ea54dafd0b6d",
+	}
+	Client := client.NewClient()
+	// TD91gHfn4xML3LcuiZsiD1Q7wcDBxJiiFv
+	Account,err := Client.GetAccount("TGx7FL5fT2BZi1obiuCNdq7yUd22LtbMTU")
+	if err != nil {
+		fmt.Printf("err :%s", err.Error())
+		return
+	}
+	data := client.GetTRXBalance(Account)
+	fmt.Println(data)
+	res,err := Client.GetBlockById("709c6ad9ee72d455c533b7a379f2cd8dac49df37d1774f507428801bf67964c6")
+	if err != nil {
+		fmt.Printf("err :%s", err.Error())
+		return
+	}
+	msg,_ := json.Marshal(res)
+	fmt.Println(string(msg))
 
 }
