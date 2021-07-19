@@ -4,6 +4,7 @@ import (
 	"crypto/ecdsa"
 	"crypto/md5"
 	"encoding/base64"
+	"fmt"
 	"github.com/xiaomingping/tron-api/pkg/base58"
 	"github.com/xiaomingping/tron-api/pkg/crypto"
 	"github.com/xiaomingping/tron-api/pkg/keystore"
@@ -27,7 +28,17 @@ func CreatAddress(pwd string) (addr, PrivateKey string, err error) {
 	return addr, base64.StdEncoding.EncodeToString(result), err
 }
 
-func GetPrivateKey(pwd,PrivateKey string) (account *ecdsa.PrivateKey, err error) {
+func Encrypt(pwd, PrivateKey string) (string, error) {
+	password := keystore.HashAndSalt([]byte(pwd + "trx"))
+	md5sum := md5.Sum([]byte(password))
+	result, err := crypto.AesEncrypt([]byte(PrivateKey), md5sum[:])
+	if err != nil {
+		return "", err
+	}
+	return base64.StdEncoding.EncodeToString(result), err
+}
+
+func GetPrivateKey(pwd, PrivateKey string) (account *ecdsa.PrivateKey, err error) {
 	password := keystore.HashAndSalt([]byte(pwd + "trx"))
 	re, err1 := base64.StdEncoding.DecodeString(PrivateKey)
 	if err != nil {
@@ -40,6 +51,7 @@ func GetPrivateKey(pwd,PrivateKey string) (account *ecdsa.PrivateKey, err error)
 		err = err1
 		return
 	}
+	fmt.Println(string(result))
 	account, err = crypto.GetPrivateKeyByHexString(string(result))
 	return
 }

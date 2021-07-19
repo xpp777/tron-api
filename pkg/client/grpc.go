@@ -190,7 +190,7 @@ func (r *Rpc) GetTrc20Balance(contract, addr string, rxp int32, ac *ecdsa.Privat
 	if transferTransactionEx == nil || len(transferTransactionEx.GetConstantResult()) == 0 {
 		return 0, fmt.Errorf("GetConstantResult error: invalid TriggerConstantContract")
 	}
-	Balance := decimal.New(r.processBalanceOfData(transferTransactionEx.GetConstantResult()[0]), rxp)
+	Balance := decimal.New(r.processBalanceOfData(transferTransactionEx.GetConstantResult()[0]), -rxp)
 	res, _ := Balance.Float64()
 	return res, err
 }
@@ -316,8 +316,6 @@ func (r *Rpc) GetNowBlock2(Transfer func(*TransferData)) {
 	for _, v := range BlockExTention.Block {
 		r.ProcessBlock(v, Transfer)
 	}
-	fmt.Println("block_num:",StartNum)
-
 }
 
 // 处理最新块数据

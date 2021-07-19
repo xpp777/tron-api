@@ -1,21 +1,42 @@
 package main
 
+import (
+	"github.com/xiaomingping/tron-api/pkg/client"
+)
+
 func main() {
+	client.Urls = []string{
+		"grpc.shasta.trongrid.io",
+		"grpc.shasta.trongrid.io",
+		"grpc.shasta.trongrid.io",
+	}
 	// path := "./key"
-	// pwd := "1esdaxcsacsac"
+	// pwd := "a"
 	// addr, PrivateKey, err := address.CreatAddress(pwd)
 	// if err != nil {
 	// 	fmt.Printf("err :%s", err.Error())
 	// 	return
 	// }
 	// fmt.Printf("addr:%s,PrivateKey:%s\n", addr, PrivateKey)
+	// PrivateKey := ""
 	// res,err := address.GetPrivateKey(pwd,PrivateKey)
 	// if err != nil {
 	// 	fmt.Printf("err :%s", err.Error())
 	// 	return
 	// }
-	// addr = base58.EncodeCheck(crypto.PubkeyToAddress(res.PublicKey).Bytes())
+	// addr := base58.EncodeCheck(crypto.PubkeyToAddress(res.PublicKey).Bytes())
 	// fmt.Println(addr)
+
+	// ci,err := client.GetNode()
+	// if err != nil {
+	// 		fmt.Printf("err :%s", err.Error())
+	// 	return
+	// }
+	// re,err := ci.GetTrc20Balance("TLYUprahhotHaKQ9U4s3AiXh7S5vuiMtBi",addr,6,res)
+	// if err != nil {
+	// 	fmt.Printf("err :%s", err.Error())
+	// 	return
+	// }
 	// client.ApiKeys = []string{
 	// 	"5527c743-dc35-4a00-8b97-7e75ac9c164b",
 	// 	"4c492539-5e03-452b-9633-6e5b8998cc36",
