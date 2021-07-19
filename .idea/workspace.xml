@@ -4,8 +4,11 @@
     <list default="true" id="66812c47-cd1b-4de2-a2b2-037329506212" name="默认的" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/demo.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/demo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/address/address.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/address/address.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/client/grpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/client/grpc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/client/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/client/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/client/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/client/model.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/keystore/keystore.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/keystore/keystore.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -20,7 +23,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" path="E:\Go" />
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -35,15 +38,21 @@
   <component name="PropertiesComponent">
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="configurable.全局.GOPATH.is.expanded" value="true" />
-    <property name="configurable.模块.GOPATH.is.expanded" value="false" />
-    <property name="configurable.项目.GOPATH.is.expanded" value="true" />
+    <property name="configurable..is.expanded" value="false" />
+    <property name="configurable.GoLibrariesConfigurable.is.expanded" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../robot" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="go.vgo" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -57,20 +66,5 @@
         <entry key="GOPROXY" value="https://goproxy.cn" />
       </map>
     </environment>
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="2787" y="373" key="EnvironmentVariablesDialog" timestamp="1617851905613">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="2787" y="373" key="EnvironmentVariablesDialog/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1617851905613" />
-    <state x="2660" y="275" key="FileChooserDialogImpl" timestamp="1619493566860">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="2660" y="275" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1619493566860" />
-    <state x="592" y="218" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1618143892731" />
-    <state x="2381" y="164" key="SettingsEditor" timestamp="1619512562320">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="2381" y="164" key="SettingsEditor/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1619512562320" />
   </component>
 </project>
