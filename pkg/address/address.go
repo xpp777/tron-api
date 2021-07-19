@@ -7,7 +7,9 @@ import (
 	"fmt"
 	"github.com/xiaomingping/tron-api/pkg/base58"
 	"github.com/xiaomingping/tron-api/pkg/crypto"
+	"github.com/xiaomingping/tron-api/pkg/hexutil"
 	"github.com/xiaomingping/tron-api/pkg/keystore"
+	"strings"
 )
 
 // 生成地址 私钥
@@ -69,4 +71,10 @@ func ValidAddress(addr string) bool {
 		return false
 	}
 	return true
+}
+
+func HexTOString(HexAddress string) string {
+	add := strings.Replace(HexAddress, "0x", "41", 1)
+	hex, _ := hexutil.Hex2Bytes(add)
+	return base58.EncodeCheck(hex)
 }

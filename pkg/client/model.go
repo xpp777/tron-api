@@ -129,7 +129,7 @@ type TransferData struct {
 	Amount      int64  `json:"amount"`       // 数量
 }
 
-//===================================================================================================
+// ===================================================================================================
 /**
 合约TRC20交易信息
 */
@@ -169,4 +169,65 @@ type ContractBlockInfo struct {
 	To              string `json:"to"`               // 转入地址
 	Value           string `json:"value"`            // 金额
 	EventIndex      int    `json:"event_index"`      // 调用状态
+}
+
+// 最新块信息
+type NewBlock struct {
+	Block []Block `json:"block"`
+}
+type Block struct {
+	BlockID      string         `json:"blockID"`
+	BlockHeader  BlockHeader    `json:"block_header"`
+	Transactions []Transactions `json:"transactions"`
+}
+
+type BlockHeader struct {
+	RawData struct {
+		Number         int    `json:"number"`
+		TxTrieRoot     string `json:"txTrieRoot"`
+		WitnessAddress string `json:"witness_address"`
+		ParentHash     string `json:"parentHash"`
+		Version        int    `json:"version"`
+		Timestamp      int64  `json:"timestamp"`
+	} `json:"raw_data"`
+	WitnessSignature string `json:"witness_signature"`
+}
+
+type Transactions struct {
+	Ret []struct {
+		ContractRet string `json:"contractRet"`
+	} `json:"ret"`
+	Signature  []string `json:"signature"`
+	TxID       string   `json:"txID"`
+	RawData    RawData  `json:"raw_data"`
+	RawDataHex string   `json:"raw_data_hex"`
+}
+
+type RawData struct {
+	Contract      []ContractData `json:"contract"`
+	RefBlockBytes string         `json:"ref_block_bytes"`
+	RefBlockHash  string         `json:"ref_block_hash"`
+	Expiration    int64          `json:"expiration"`
+	FeeLimit      int            `json:"fee_limit"`
+	Timestamp     int64          `json:"timestamp"`
+}
+type ContractData struct {
+	Parameter Parameter `json:"parameter"`
+	Type      string    `json:"type"`
+}
+type Parameter struct {
+	Value   interface{} `json:"value"`
+	TypeURL string      `json:"type_url"`
+}
+
+type Value struct {
+	Data            string `json:"data"`
+	OwnerAddress    string `json:"owner_address"`
+	ContractAddress string `json:"contract_address"`
+}
+
+type Trc struct {
+	Amount       int64  `json:"amount"`
+	OwnerAddress string `json:"owner_address"`
+	ToAddress    string `json:"to_address"`
 }

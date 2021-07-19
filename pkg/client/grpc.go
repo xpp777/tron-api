@@ -22,7 +22,8 @@ import (
 
 var (
 	feelimit int64 = 40000000 // 转账合约燃烧 trx数量 单位 sun 默认0.5trx 转账一笔大概消耗能量 0.26trx
-	startNum int64 = 14397932 // 最后校验块
+	startNum int64 = 32078115
+	// 最后校验块
 	count    int64 = 20       // 每次获取块数量
 	Trx            = "trx"
 	Urls           = []string{
