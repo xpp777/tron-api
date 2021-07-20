@@ -3,9 +3,9 @@ package client
 import (
 	"errors"
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
 	"github.com/shopspring/decimal"
 	"github.com/xiaomingping/tron-api/pkg/address"
@@ -24,6 +24,9 @@ var (
 	curIndex        = 0
 	mutex           sync.Mutex
 	ApiKeys         []string
+	startNum int64 = 32091379
+	// 最后校验块
+	count    int64 = 1       // 每次获取块数量
 	trxdecimal      int32 = 6 // trx 单位
 	mapContract           = make(map[string]*ContractModel)
 	mapContractType       = map[string]bool{
@@ -32,6 +35,15 @@ var (
 		"trc20": true,
 	}
 )
+
+func SetStartNum(StartNum int64) {
+	connMutex.Lock()
+	startNum = StartNum
+	defer connMutex.Unlock()
+}
+func GetStartNum() int64 {
+	return startNum
+}
 
 // 初始化合约
 func InitContract(contracts []ContractModel) error {
@@ -42,6 +54,7 @@ func InitContract(contracts []ContractModel) error {
 			return fmt.Errorf("the contract type %s is not exist pleasecheck", v.Type)
 		}
 	}
+
 	return nil
 }
 
@@ -216,7 +229,7 @@ func (c *Client) ProcessBlock(block Block, Transfer func(*TransferData)) {
 		txId := v.TxID
 		for _, val := range v.RawData.Contract {
 			switch val.Type {
-			case "TransferContract":
+			case "TransferContract": // trc
 				// trx 转账
 				unObj := &Trc{}
 				err := gconv.Struct(val.Parameter.Value, unObj)
@@ -229,6 +242,8 @@ func (c *Client) ProcessBlock(block Block, Transfer func(*TransferData)) {
 				HexTo, _ := hexutil.Hex2Bytes(unObj.ToAddress)
 				to := base58.EncodeCheck(HexTo)
 				Transfer(&TransferData{FormAddress: form, ToAddress: to, Amount: unObj.Amount, Contract: "trx", TxId: txId})
+			case "TransferAssetContract": // trc10
+				continue
 			case "TriggerSmartContract":
 				// trc20 转账
 				unObj := &Value{}
@@ -242,7 +257,7 @@ func (c *Client) ProcessBlock(block Block, Transfer func(*TransferData)) {
 				HexForm, _ := hexutil.Hex2Bytes(unObj.OwnerAddress)
 				form := base58.EncodeCheck(HexForm)
 				// unObj.Data  https://goethereumbook.org/en/transfer-tokens/ 参考eth 操作
-				to, amount, flag := c.processTransferData(gconv.Bytes(unObj.Data))
+				to, amount, flag := c.processTransferData(unObj.Data)
 				if flag { // 只有调用了 transfer(address,uint256) 才是转账
 					Transfer(&TransferData{FormAddress: form, ToAddress: to, Amount: amount, Contract: contract, TxId: txId})
 				}
@@ -252,15 +267,18 @@ func (c *Client) ProcessBlock(block Block, Transfer func(*TransferData)) {
 }
 
 // 处理合约参数
-func (c *Client) processTransferData(trc20 []byte) (to string, amount int64, flag bool) {
+func (c *Client) processTransferData(trc20 string) (to string, amount int64, flag bool) {
 	if len(trc20) >= 68 {
-		if hexutil.Encode(trc20[:4]) != "a9059cbb" {
+		if gstr.SubStr(trc20, 0, 8) != "a9059cbb" {
 			return
 		}
-		// 多1位41
-		trc20[15] = 65
-		to = base58.EncodeCheck(trc20[15:36])
-		amount = new(big.Int).SetBytes(common.TrimLeftZeroes(trc20[36:68])).Int64()
+		addressHex := string(TrimLeftZeroes(gconv.Bytes(gstr.SubStr(trc20, 8, 64))))
+		if len(addressHex) != 42 {
+			addressHex = "41" + addressHex
+		}
+		to = address.HexTOString(addressHex)
+		amountHex, _ := hexutil.Hex2Bytes(string(TrimLeftZeroes(gconv.Bytes(gstr.SubStr(trc20, 72, 64)))))
+		amount = new(big.Int).SetBytes(amountHex).Int64()
 		flag = true
 	}
 	return

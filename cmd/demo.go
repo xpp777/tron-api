@@ -1,11 +1,5 @@
 package main
 
-import (
-	"encoding/json"
-	"fmt"
-	"github.com/xiaomingping/tron-api/pkg/client"
-)
-
 func main() {
 	// client.Urls = []string{
 	// 	"grpc.shasta.trongrid.io",
@@ -29,11 +23,14 @@ func main() {
 	// addr := base58.EncodeCheck(crypto.PubkeyToAddress(res.PublicKey).Bytes())
 	// fmt.Println(addr)
 
-	// ci,err := client.GetNode()
-	// if err != nil {
-	// 		fmt.Printf("err :%s", err.Error())
-	// 	return
-	// }
+	//ci,err := client.GetNode()
+	//if err != nil {
+	//		fmt.Printf("err :%s", err.Error())
+	//	return
+	//}
+	//ci.GetNowBlock2(func(data *client.TransferData) {
+	//	fmt.Println(data)
+	//})
 	// re,err := ci.GetTrc20Balance("TLYUprahhotHaKQ9U4s3AiXh7S5vuiMtBi",addr,6,res)
 	// if err != nil {
 	// 	fmt.Printf("err :%s", err.Error())
@@ -157,29 +154,23 @@ func main() {
 	// fmt.Println("add",add)
 	//
 	//
-	var Contract []client.ContractModel
-	Contract = append(Contract, client.ContractModel{
-		Name:     "glv",
-		Type:     "trc20",
-		Contract: "TGx6pZ7j7NgXCtifWHeBSRTUrmtMCyo6Qs",
-		Decimal:  6,
-	})
-	Contract = append(Contract, client.ContractModel{
-		Name:     "USDT",
-		Type:     "trc20",
-		Contract: "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
-		Decimal:  6,
-	})
-	err := client.InitContract(Contract)
-	if err != nil {
-		fmt.Printf("err :%s", err.Error())
-		return
-	}
-	client.ApiKeys = []string{
-		"9e3b28c4-3fd3-48c9-97af-ce4af055bcbb",
-		"e29b2bc3-acba-4fe1-b784-ea54dafd0b6d",
-	}
-	Client := client.NewClient()
+	//var Contract []client.ContractModel
+	//Contract = append(Contract, client.ContractModel{
+	//	Name:     "USDT",
+	//	Type:     "trc20",
+	//	Contract: "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
+	//	Decimal:  6,
+	//})
+	//err := client.InitContract(Contract)
+	//if err != nil {
+	//	fmt.Printf("err :%s", err.Error())
+	//	return
+	//}
+	//client.ApiKeys = []string{
+	//	"9e3b28c4-3fd3-48c9-97af-ce4af055bcbb",
+	//	"e29b2bc3-acba-4fe1-b784-ea54dafd0b6d",
+	//}
+	//Client := client.NewClient()
 	// // TD91gHfn4xML3LcuiZsiD1Q7wcDBxJiiFv
 	// Account,err := Client.GetAccount("TGx7FL5fT2BZi1obiuCNdq7yUd22LtbMTU")
 	// if err != nil {
@@ -195,8 +186,10 @@ func main() {
 	// }
 	// msg,_ := json.Marshal(res)
 	// fmt.Println(string(msg))
-	Client.GetBlockByLimitNext(func(data *client.TransferData) {
-		msg, _ := json.Marshal(data)
-		fmt.Println(string(msg))
-	})
+	//data := processTransferParameter("41b6011a31721cd1a73c79c8e747ff5882b84a5376",2000000000)
+	//g.Log().Println(string(data))
+	//Client.GetBlockByLimitNext(func(data *client.TransferData) {
+	//	msg, _ := json.Marshal(data)
+	//	fmt.Println(string(msg))
+	//})
 }

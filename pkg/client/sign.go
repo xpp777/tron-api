@@ -29,3 +29,13 @@ func SignTransaction(transaction *core.Transaction, key *ecdsa.PrivateKey) ([]by
 	}
 	return hash, nil
 }
+
+func TrimLeftZeroes(s []byte) []byte {
+	idx := 0
+	for ; idx < len(s); idx++ {
+		if s[idx] != 48 {
+			break
+		}
+	}
+	return s[idx:]
+}

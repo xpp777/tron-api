@@ -8,6 +8,7 @@
       <change beforePath="$PROJECT_DIR$/pkg/client/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/client/client.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/client/grpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/client/grpc.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/client/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/client/model.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/client/sign.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/client/sign.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,8 +44,6 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../work/glv/src/service" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../robot" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
