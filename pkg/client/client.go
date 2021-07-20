@@ -26,7 +26,7 @@ var (
 	ApiKeys         []string
 	startNum int64 = 32091379
 	// 最后校验块
-	count    int64 = 1       // 每次获取块数量
+	count    int64 = 20       // 每次获取块数量
 	trxdecimal      int32 = 6 // trx 单位
 	mapContract           = make(map[string]*ContractModel)
 	mapContractType       = map[string]bool{
@@ -217,7 +217,7 @@ func (c *Client) GetBlockByLimitNext(Transfer func(*TransferData)) {
 		g.Log().Error(err)
 		return
 	}
-	StartNum := startNum + int64(len(NewBlock.Block)-1)
+	StartNum := startNum + int64(len(NewBlock.Block))
 	SetStartNum(StartNum)
 	for _, v := range NewBlock.Block {
 		c.ProcessBlock(v, Transfer)
