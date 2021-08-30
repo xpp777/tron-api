@@ -4,7 +4,6 @@ import (
 	"crypto/ecdsa"
 	"crypto/md5"
 	"encoding/base64"
-	"fmt"
 	"github.com/xiaomingping/tron-api/pkg/base58"
 	"github.com/xiaomingping/tron-api/pkg/crypto"
 	"github.com/xiaomingping/tron-api/pkg/hexutil"
@@ -53,7 +52,6 @@ func GetPrivateKey(pwd, PrivateKey string) (account *ecdsa.PrivateKey, err error
 		err = err1
 		return
 	}
-	fmt.Println(string(result))
 	account, err = crypto.GetPrivateKeyByHexString(string(result))
 	return
 }
