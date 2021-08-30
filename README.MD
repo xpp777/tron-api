@@ -60,7 +60,7 @@
 	}
 	rpc.SetContractMap(ContractMap)
     // 发起交易
-	txid, err := rpc.NewRpc().Sen(PrivateKey, "TGx6pZ7j7NgXCtifWHeBSRTUrmtMCyo6Qs", "TWikuNZiXS1DCPdpJLv6UdRU5eNZBgxPko", decimal.NewFromFloat(0.01))
+	txid, err := rpc.NewRpc().Sen(PrivateKey, "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t", "TD1HSXrv756gehQj1fi9hEUfVkheR9G4DV", decimal.NewFromFloat(0.01))
 	if err != nil {
 		g.Log().Error(err)
 		return
