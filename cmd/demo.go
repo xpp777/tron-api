@@ -188,8 +188,13 @@ func main() {
 	// fmt.Println(string(msg))
 	//data := processTransferParameter("41b6011a31721cd1a73c79c8e747ff5882b84a5376",2000000000)
 	//g.Log().Println(string(data))
-	//Client.GetBlockByLimitNext(func(data *client.TransferData) {
-	//	msg, _ := json.Marshal(data)
-	//	fmt.Println(string(msg))
+	//ApiKeys := []string{
+	//	"9e3b28c4-3fd3-48c9-97af-ce4af055bcbb",
+	//	"e29b2bc3-acba-4fe1-b784-ea54dafd0b6d",
+	//}
+	//client := api.NewClient(	33251080,"",ApiKeys)
+	//client.GetBlockByLimitNext(func(data *model.TransferData) {
+	//	fmt.Println(data)
 	//})
+	//select {}
 }
