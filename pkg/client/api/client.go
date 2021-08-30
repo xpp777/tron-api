@@ -97,6 +97,13 @@ func (c *Client) GetBlockByLimitNext(Transfer func(*model.TransferData)) {
 func (c *Client) processBlock(block model.Block, Transfer func(*model.TransferData)) {
 	for _, v := range block.Transactions {
 		txId := v.TxID
+		if v.Ret == nil || len(v.Ret) == 0 {
+			continue
+		}
+		rets := v.Ret[0].ContractRet
+		if rets != "SUCCESS" {
+			continue
+		}
 		for _, val := range v.RawData.Contract {
 			switch val.Type {
 			case "TransferContract": // trx 转账
@@ -140,7 +147,9 @@ func (c *Client) processTransferData(trc20 string) (to string, amount int64, fla
 		s := string(sign.TrimLeftZeroes([]byte(trc20[72:])))
 		var b *big.Int
 		b, flag = new(big.Int).SetString(s, 16)
-		amount = b.Int64()
+		if flag {
+			amount = b.Int64()
+		}
 	}
 	return
 }

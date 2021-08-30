@@ -18,4 +18,5 @@ main
 .vscode
 *.exe
 tmp
+cmd/
 public/resource/pub_upload/
