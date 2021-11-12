@@ -16,6 +16,7 @@ import (
 	"github.com/xiaomingping/tron-api/pkg/sign"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
+	"google.golang.org/grpc/keepalive"
 	"log"
 	"math/big"
 	"math/rand"
@@ -80,7 +81,16 @@ func (r *Rpc) getIp() string {
 }
 
 func (r *Rpc) creationConn() (*grpc.ClientConn, error) {
-	Conn, err := grpc.Dial(r.getIp(), grpc.WithInsecure())
+	Conn, err := grpc.Dial(
+		r.getIp(),
+		grpc.WithInsecure(),
+		grpc.WithBlock(),
+		grpc.WithKeepaliveParams(keepalive.ClientParameters{
+			Time:                10 * time.Second,
+			Timeout:             100 * time.Millisecond,
+			PermitWithoutStream: true,
+		}),
+	)
 	if err != nil {
 		log.Fatal(err)
 		return nil, err
