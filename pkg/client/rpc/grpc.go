@@ -7,7 +7,6 @@ import (
 	"github.com/fbsobreira/gotron-sdk/pkg/common"
 	"github.com/fbsobreira/gotron-sdk/pkg/proto/api"
 	"github.com/fbsobreira/gotron-sdk/pkg/proto/core"
-	"github.com/gogf/gf/frame/g"
 	"github.com/shopspring/decimal"
 	"github.com/xiaomingping/tron-api/pkg/base58"
 	"github.com/xiaomingping/tron-api/pkg/crypto"
@@ -142,7 +141,7 @@ func (r *Rpc) timeoutContext() context.Context {
 func (r *Rpc) GetClient() api.WalletClient {
 	Conn, err := r.getNode()
 	if err != nil {
-		g.Log().Error(err)
+		fmt.Println(err.Error())
 		return nil
 	}
 	return api.NewWalletClient(Conn)
