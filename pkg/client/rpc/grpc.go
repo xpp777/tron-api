@@ -17,13 +17,17 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
 	"google.golang.org/grpc/keepalive"
+	"google.golang.org/grpc/metadata"
 	"log"
 	"math/big"
 	"math/rand"
+	"sync"
 	"time"
 )
 
 var (
+	curIndex        = 0
+	mutex           sync.Mutex
 	conn     *grpc.ClientConn
 	feeLimit int64 = 40000000 // 转账合约燃烧 trx数量 单位 sun 默认0.5trx 转账一笔大概消耗能量 0.26trx
 	Trx            = "trx"
@@ -58,7 +62,9 @@ func SetContractMap(ContractMap map[string]*model.ContractModel) {
 	mapContract = ContractMap
 }
 
-type Rpc struct{}
+type Rpc struct{
+	apiKeys  []string // api key
+}
 
 // 判断当前属于什么合约
 func ChargeContract(contract string) (string, int32) {
@@ -72,12 +78,24 @@ func ChargeContract(contract string) (string, int32) {
 	}
 	return "NONE", 18
 }
-func NewRpc() *Rpc {
-	return &Rpc{}
+func NewRpc(apiKeys []string) *Rpc {
+	return &Rpc{apiKeys: apiKeys}
 }
 
 func (r *Rpc) getIp() string {
 	return Urls[rand.Intn(len(Urls))] + ":50051"
+}
+// 获取api key
+func (c *Rpc) getApiKey() string {
+	mutex.Lock()
+	defer mutex.Unlock()
+	lens := len(c.apiKeys)
+	if curIndex >= lens {
+		curIndex = 0
+	}
+	inst := c.apiKeys[curIndex]
+	curIndex = (curIndex + 1) % lens
+	return inst
 }
 
 func (r *Rpc) creationConn() (*grpc.ClientConn, error) {
@@ -116,6 +134,7 @@ func (r *Rpc) timeoutContext() context.Context {
 		time.Sleep(time.Second * 30)
 		cancel()
 	}()
+	ctx = metadata.AppendToOutgoingContext(ctx, "TRON-PRO-API-KEY", r.getApiKey())
 	return ctx
 }
 

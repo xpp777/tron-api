@@ -20,3 +20,4 @@ main
 tmp
 cmd/
 public/resource/pub_upload/
+demo.go
