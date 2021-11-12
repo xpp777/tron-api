@@ -1,12 +1,12 @@
 module github.com/xiaomingping/tron-api
 
-go 1.16
+go 1.14
 
 require (
 	github.com/btcsuite/btcd v0.21.0-beta // indirect
 	github.com/ethereum/go-ethereum v1.10.1
 	github.com/fbsobreira/gotron-sdk v0.0.0-20210316163828-8cb47d581197
-	github.com/gogf/gf v1.15.6
+	github.com/gogf/gf v1.15.7
 	github.com/golang/protobuf v1.4.3
 	github.com/shengdoushi/base58 v1.0.0
 	github.com/shopspring/decimal v1.2.0
